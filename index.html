@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>15 Ans de la chaîne @FuzeIII</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:radial-gradient(circle at top,#1f1f1f,#0a0a0a 70%);
+    overflow:hidden;
+    color:white;
+}
+
+.page{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    transition:0.5s ease;
+    overflow-y:auto;
+    padding:20px;
+}
+
+.container{
+    background:rgba(20,20,20,.92);
+    border:1px solid rgba(255,255,255,.08);
+    padding:45px;
+    border-radius:30px;
+    backdrop-filter:blur(10px);
+    box-shadow:
+        0 0 40px rgba(0,0,0,.6),
+        inset 0 0 20px rgba(255,255,255,.03);
+    text-align:center;
+    max-width:1100px;
+    width:100%;
+}
+
+.title{
+    color:white;
+    font-size:3rem;
+    margin-bottom:10px;
+    font-weight:900;
+}
+
+.channel{
+    color:#ff4747;
+    font-size:1.3rem;
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+.channel a{
+    color:#ff4747;
+    text-decoration:none;
+    transition:0.2s;
+}
+
+.channel a:hover{
+    text-decoration:underline;
+    text-shadow:0 0 5px #ff4747;
+}
+
+.subtitle{
+    color:#999;
+    margin-bottom:40px;
+    font-size:1rem;
+}
+
+.countdown{
+    display:flex;
+    gap:18px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.time-box{
+    min-width:120px;
+    padding:22px 18px;
+    border-radius:22px;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.02)
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        inset 0 0 12px rgba(255,255,255,.03),
+        0 10px 25px rgba(0,0,0,.35);
+
+    transition:.25s;
+}
+
+.time-box:hover{
+    transform:translateY(-6px) scale(1.03);
+}
+
+.number{
+    font-size:3.4rem;
+    font-weight:900;
+    color:white;
+    text-shadow:0 0 20px rgba(255,255,255,.15);
+}
+
+.label{
+    margin-top:10px;
+    color:#aaa;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    font-size:.8rem;
+}
+
+.expired{
+    color:#ff4d4d;
+    font-size:2rem;
+    font-weight:bold;
+    animation:pulse 1s infinite;
+}
+
+.arrow-btn{
+    position:absolute;
+    bottom:35px;
+    left:50%;
+    transform:translateX(-50%);
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    border:none;
+    cursor:pointer;
+    background:rgba(255,255,255,.08);
+    color:white;
+    font-size:2rem;
+    transition:.25s;
+    backdrop-filter:blur(10px);
+    box-shadow:0 0 20px rgba(0,0,0,.4);
+    z-index:15;
+}
+
+.arrow-btn:hover{
+    transform:translateX(-50%) scale(1.1);
+    background:#ff4747;
+}
+
+.legal-link{
+    position:absolute;
+    bottom:20px;
+    right:25px;
+    background:rgba(0,0,0,.6);
+    padding:8px 16px;
+    border-radius:40px;
+    font-size:0.8rem;
+    color:#ccc;
+    text-decoration:none;
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.1);
+    transition:.25s;
+    z-index:20;
+}
+
+.legal-link:hover{
+    color:white;
+    background:#ff4747;
+    border-color:#ff4747;
+}
+
+/* Bannière cookies */
+.cookie-banner{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background:rgba(0,0,0,.95);
+    backdrop-filter:blur(12px);
+    border-top:1px solid rgba(255,71,71,.3);
+    padding:16px 24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+    z-index:1000;
+    transform:translateY(0);
+    transition:0.3s;
+}
+
+.cookie-banner.hidden{
+    transform:translateY(100%);
+}
+
+.cookie-text{
+    color:white;
+    font-size:0.9rem;
+}
+
+.cookie-text strong{
+    color:#ff4747;
+}
+
+.cookie-buttons{
+    display:flex;
+    gap:12px;
+}
+
+.cookie-btn{
+    padding:8px 20px;
+    border-radius:30px;
+    border:none;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.cookie-btn.accept{
+    background:#ff4747;
+    color:white;
+}
+
+.cookie-btn.accept:hover{
+    background:#ff6666;
+    transform:scale(1.02);
+}
+
+.cookie-btn.deny{
+    background:#333;
+    color:#ccc;
+}
+
+.cookie-btn.deny:hover{
+    background:#444;
+    transform:scale(1.02);
+}
+
+/* Popup de remerciement */
+.popup-overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.85);
+    backdrop-filter:blur(5px);
+    z-index:1001;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+    visibility:hidden;
+    transition:0.3s;
+}
+
+.popup-overlay.active{
+    opacity:1;
+    visibility:visible;
+}
+
+.popup{
+    background:linear-gradient(145deg,#1e1e1e,#111);
+    border:1px solid rgba(255,71,71,.3);
+    border-radius:28px;
+    padding:30px;
+    max-width:450px;
+    width:90%;
+    text-align:center;
+    box-shadow:0 0 50px rgba(255,71,71,.2);
+    transform:scale(0.9);
+    transition:0.3s;
+}
+
+.popup-overlay.active .popup{
+    transform:scale(1);
+}
+
+.popup h3{
+    color:#ff4747;
+    font-size:1.8rem;
+    margin-bottom:20px;
+}
+
+.popup p{
+    color:#ccc;
+    margin:15px 0;
+    line-height:1.5;
+}
+
+.thanks-message{
+    color:#ff4747;
+    font-weight:bold;
+    margin-top:10px;
+    font-size:0.9rem;
+}
+
+.popup-buttons{
+    display:flex;
+    gap:15px;
+    justify-content:center;
+    margin-top:25px;
+}
+
+.popup-btn{
+    padding:12px 24px;
+    border:none;
+    border-radius:40px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.popup-btn.close{
+    background:#ff4747;
+    color:white;
+}
+
+.popup-btn.close:hover{
+    background:#ff6666;
+    transform:scale(1.02);
+}
+
+#merchPage{
+    transform:translateY(100%);
+    opacity:0;
+    pointer-events:none;
+}
+
+#merchPage.active{
+    transform:translateY(0);
+    opacity:1;
+    pointer-events:auto;
+}
+
+#legalPage{
+    transform:translateY(100%);
+    opacity:0;
+    pointer-events:none;
+}
+
+#legalPage.active{
+    transform:translateY(0);
+    opacity:1;
+    pointer-events:auto;
+}
+
+#mainPage.hidden{
+    transform:translateY(-100%);
+    opacity:0;
+    pointer-events:none;
+}
+
+.merch-title{
+    font-size:3rem;
+    font-weight:900;
+    margin-bottom:15px;
+}
+
+.merch-sub{
+    color:#aaa;
+    margin-bottom:35px;
+}
+
+.merch-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:25px;
+    width:100%;
+    margin-bottom:20px;
+}
+
+.card{
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;
+    padding:20px;
+    transition:.25s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+}
+
+.card-img{
+    width:100%;
+    border-radius:18px;
+    margin-bottom:15px;
+    background:#2a2a2a;
+    object-fit:cover;
+}
+
+.cape-preview, .skin-preview{
+    background:#0f0f0f;
+    border-radius:18px;
+    padding:8px;
+}
+
+.skin-preview img{
+    image-rendering:pixelated;
+    image-rendering: crisp-edges;
+    background:#1a1a1a;
+}
+
+.card h3{
+    margin-bottom:10px;
+    font-size:1.3rem;
+}
+
+.price{
+    color:white;
+    font-weight:bold;
+    font-size:1.1rem;
+    margin-top:10px;
+}
+
+.free-badge{
+    display:inline-block;
+    background:#ff4747;
+    padding:4px 16px;
+    border-radius:30px;
+    font-size:0.95rem;
+    font-weight:bold;
+    letter-spacing:1px;
+    color:white;
+}
+
+.download-btn, .tuto-btn{
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 20px;
+    border-radius:40px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:.25s;
+    font-size:0.9rem;
+    cursor:pointer;
+}
+
+.download-btn{
+    background:#2a6f2a;
+    color:white;
+    border:none;
+}
+
+.download-btn:hover{
+    background:#1e8a1e;
+    transform:scale(1.02);
+}
+
+.tuto-btn{
+    background:#3a6ea5;
+    color:white;
+    margin-left:10px;
+    border:none;
+}
+
+.tuto-btn:hover{
+    background:#2c5a8c;
+    transform:scale(1.02);
+}
+
+.back-btn{
+    margin-top:25px;
+    padding:14px 28px;
+    border:none;
+    border-radius:14px;
+    background:#ff4747;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.back-btn:hover{
+    transform:scale(1.05);
+}
+
+/* Page mentions légales */
+.legal-content{
+    text-align:left;
+    max-width:800px;
+    margin:0 auto;
+}
+
+.legal-content h2{
+    color:#ff4747;
+    margin-top:25px;
+    margin-bottom:10px;
+    font-size:1.5rem;
+}
+
+.legal-content p{
+    color:#bbb;
+    line-height:1.6;
+    margin-bottom:15px;
+}
+
+.legal-content .disclaimer{
+    background:rgba(255,71,71,.15);
+    border-left:4px solid #ff4747;
+    padding:20px;
+    border-radius:16px;
+    margin:25px 0;
+}
+
+.creator-sign{
+    margin-top:30px;
+    text-align:center;
+    font-size:0.9rem;
+    color:#888;
+    border-top:1px solid rgba(255,255,255,.1);
+    padding-top:20px;
+}
+
+.credit-link{
+    color:#ff4747;
+    text-decoration:none;
+    transition:0.2s;
+}
+
+.credit-link:hover{
+    text-decoration:underline;
+    text-shadow:0 0 3px #ff4747;
+}
+
+@keyframes pulse{
+    0%{opacity:1}
+    50%{opacity:.5}
+    100%{opacity:1}
+}
+
+@media(max-width:700px){
+
+    .container{
+        width:95%;
+        padding:25px;
+    }
+
+    .title{
+        font-size:2rem;
+    }
+
+    .time-box{
+        min-width:90px;
+    }
+
+    .number{
+        font-size:2.2rem;
+    }
+
+    .merch-title{
+        font-size:2rem;
+    }
+
+    .legal-link{
+        bottom:10px;
+        right:10px;
+        font-size:0.7rem;
+    }
+    
+    .tuto-btn{
+        margin-left:0;
+        margin-top:8px;
+        display:inline-block;
+    }
+    
+    .cookie-banner{
+        flex-direction:column;
+        text-align:center;
+        padding:12px;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- BANNIÈRE COOKIES -->
+<div class="cookie-banner" id="cookieBanner">
+    <div class="cookie-text">
+        🍪 <strong>Ce site n'utilise pas de cookies</strong> — Aucune donnée n'est collectée, aucun suivi, rien du tout !
+    </div>
+    <div class="cookie-buttons">
+        <button class="cookie-btn accept" onclick="acceptCookies()">D'accord</button>
+        <button class="cookie-btn deny" onclick="denyCookies()">Ohh dommage</button>
+    </div>
+</div>
+
+<!-- POPUP DE REMERCIEMENT À FUZEIII (au chargement) -->
+<div class="popup-overlay" id="thanksPopup">
+    <div class="popup">
+        <h3>🎉 MERCI FUZEIII ! 🎉</h3>
+        <p style="text-align:center; font-size:1.1rem;">
+            Pour 15 années incroyables de contenu, de rires et de bonne humeur !
+        </p>
+        <p style="text-align:center;">
+            Toute la communauté te dit MERCI pour tout ce que tu as apporté à Minecraft et au YouTube français.
+        </p>
+        <div class="thanks-message">
+            ❤️ Bon anniversaire FuzeIII ! ❤️
+        </div>
+        <div class="popup-buttons">
+            <button class="popup-btn close" onclick="closeThanksPopup()">Continuer</button>
+        </div>
+    </div>
+</div>
+
+<!-- PAGE PRINCIPALE -->
+<div class="page" id="mainPage">
+
+<div class="container">
+
+    <div class="title">
+        15 ANS
+    </div>
+
+    <div class="channel">
+        de la chaîne <a href="https://www.youtube.com/fuzeiii" target="_blank">@FuzeIII</a>
+    </div>
+
+    <div class="subtitle">
+        Compte à rebours avant l'anniversaire
+    </div>
+
+    <div class="countdown" id="countdown">
+
+        <div class="time-box">
+            <div class="number" id="days">00</div>
+            <div class="label">Jours</div>
+        </div>
+
+        <div class="time-box">
+            <div class="number" id="hours">00</div>
+            <div class="label">Heures</div>
+        </div>
+
+        <div class="time-box">
+            <div class="number" id="minutes">00</div>
+            <div class="label">Minutes</div>
+        </div>
+
+        <div class="time-box">
+            <div class="number" id="seconds">00</div>
+            <div class="label">Secondes</div>
+        </div>
+
+    </div>
+
+</div>
+
+<button class="arrow-btn" onclick="openMerch()">
+    ↓
+</button>
+
+<a href="javascript:void(0)" class="legal-link" onclick="openLegal()">
+    Mentions légales
+</a>
+
+</div>
+
+<!-- PAGE MERCH (CAPE + SKIN) -->
+<div class="page" id="merchPage">
+
+<div class="container" style="width:95%;max-width:1100px;">
+
+    <div class="merch-title">
+        Goodies 15 ans
+    </div>
+
+    <div class="merch-sub">
+        Collection fan-made — Téléchargements GRATUITS
+    </div>
+
+    <div class="merch-grid">
+
+        <!-- Carte CAPE -->
+        <div class="card">
+            <div class="cape-preview">
+                <img class="card-img" src="https://i.imgur.com/tiU84QN.png" alt="Aperçu de la cape 15 ans FuzeIII" style="background:#111; image-rendering:pixelated;">
+            </div>
+            <h3>🎭 Cape Exclusive 15 Ans</h3>
+            <div class="price"><span class="free-badge">GRATUIT</span></div>
+            <div>
+                <button class="download-btn" onclick="window.open('https://imgur.com/a/Mm1XOGg', '_blank')">
+                    📥 Obtenir la cape
+                </button>
+            </div>
+            <p style="font-size:0.75rem; color:#aaa; margin-top:15px;">
+                Compatible avec le mod MinecraftCapes.net (Forge/Fabric).<br>
+                Cliquez pour ouvrir le tutoriel d'installation.
+            </p>
+        </div>
+
+        <!-- Carte SKIN -->
+        <div class="card">
+            <div class="skin-preview">
+                <img class="card-img" src="https://i.imgur.com/H3UsJNO.png" alt="Skin 15 ans FuzeIII" style="background:#111; image-rendering:pixelated; max-width:200px; margin:0 auto; display:block;">
+            </div>
+            <h3>✨ Skin Commémoratif 15 Ans</h3>
+            <div class="price"><span class="free-badge">GRATUIT</span></div>
+            <div>
+                <button class="download-btn" onclick="window.open('https://imgur.com/a/EwQVeDP', '_blank')">
+                    📥 Obtenir le skin
+                </button>
+                <button class="tuto-btn" onclick="alert('Installation du skin Minecraft : 1) Téléchargez le fichier PNG. 2) Allez sur le site officiel Minecraft ou votre lanceur. 3) Dans l\'onglet \"Skin\", importez le fichier.')">
+                    🔧 Installer
+                </button>
+            </div>
+            <p style="font-size:0.75rem; color:#aaa; margin-top:15px;">
+                Skin compatible Java & Bedrock (format 64x64).<br>
+                Cliquez sur "Obtenir le skin" pour télécharger l'image.
+            </p>
+        </div>
+
+    </div>
+
+    <p style="margin-top:15px; font-size:0.8rem; color:#666;">
+        ⚠️ Site fan-made par Damoko, non affilié à Mojang ou @FuzeIII. Cape compatible avec le mod <a href="https://minecraftcapes.net" target="_blank" style="color:#ff4747;">MinecraftCapes.net</a>
+    </p>
+
+    <button class="back-btn" onclick="closeMerch()">
+        Retour
+    </button>
+
+</div>
+
+</div>
+
+<!-- PAGE MENTIONS LEGALES -->
+<div class="page" id="legalPage">
+
+<div class="container">
+
+    <div class="merch-title" style="font-size:2rem;">
+        Mentions Légales
+    </div>
+
+    <div class="merch-sub">
+        Informations importantes
+    </div>
+
+    <div class="legal-content">
+
+        <div class="disclaimer">
+            <strong>📢 Site fan-made (non officiel)</strong><br><br>
+            Ce site a été créé par <strong>Damoko</strong> pour célébrer les 15 ans de la chaîne YouTube <strong>@FuzeIII</strong>. 
+            Il n'est ni affilié, ni approuvé, ni géré par FuzeIII ou ses ayants droit.<br><br>
+            <strong>MinecraftCapes.net :</strong> le mod utilisé pour les capes est un service tiers indépendant. 
+            Ce site n'est pas lié officiellement à Mojang Studios.
+        </div>
+
+        <h2>1. Éditeur du site</h2>
+        <p>
+            Ce site est édité par <strong>Damoko</strong>, fan passionné, sans but lucratif. Aucune entreprise ou organisation 
+            officielle n'est liée à ce projet. Les créations proposées (cape, skin) sont des 
+            œuvres originales ou adaptées avec l'aimable autorisation des créateurs originaux.
+        </p>
+
+        <h2>2. Propriété intellectuelle</h2>
+        <p>
+            Les marques, noms, logos et contenus relatifs à <strong>@FuzeIII</strong> restent la propriété exclusive 
+            de leur détenteur légitime. Minecraft est une marque déposée de Mojang Studios. 
+            Ce site n'a pas l'intention de violer ces droits mais souhaite simplement rendre hommage 
+            au créateur de contenu. Si vous êtes l'auteur ou un représentant et souhaitez la modification 
+            ou la suppression d'un élément, contactez-nous.
+        </p>
+
+        <h2>3. Téléchargements gratuits</h2>
+        <p>
+            Tous les goodies proposés (cape Minecraft, skin) sont strictement gratuits. 
+            La cape utilise le mod <a href="https://minecraftcapes.net" target="_blank" style="color:#ff4747;">MinecraftCapes.net</a>, un service indépendant.
+            Le skin est au format standard et peut être installé via le lanceur Minecraft officiel.
+        </p>
+
+        <h2>4. Crédits du skin</h2>
+        <p>
+            Le design original du skin "tu es un astronaute" a été créé par <strong>dffvrtxg</strong> sur NovaSkin.<br>
+            Skin original disponible ici : 
+            <a href="https://minecraft.novaskin.me/post/2045522/tu-es-un-astronaute" target="_blank" class="credit-link">
+                https://minecraft.novaskin.me/post/2045522/tu-es-un-astronaute
+            </a><br>
+            Une version modifiée/adaptée a été réalisée pour célébrer les 15 ans de @FuzeIII. Merci à l'auteur original pour son travail !
+        </p>
+
+        <h2>5. Responsabilité</h2>
+        <p>
+            L'utilisateur est seul responsable de l'utilisation qu'il fait des ressources téléchargées. 
+            Les fichiers fournis ne contiennent aucun logiciel malveillant et sont proposés "en l'état" 
+            sans garantie d'aucune sorte.
+        </p>
+
+        <h2>6. Contact (créateur)</h2>
+        <p>
+            📧 Pour toute question ou demande de retrait : <strong>damoko@tuta.io</strong><br>
+            Créateur du projet : <strong>Damoko</strong>
+        </p>
+
+        <h2>7. Remerciements</h2>
+        <p>
+            Merci à <strong>@FuzeIII</strong> pour 15 années de contenu incroyable !<br>  
+            Le mod de cape est possible grâce à <a href="https://minecraftcapes.net" target="_blank" class="credit-link">MinecraftCapes.net</a>.<br>
+            Merci à <strong>dffvrtxg</strong> pour l'inspiration du skin original sur NovaSkin.
+        </p>
+
+    </div>
+
+    <div class="creator-sign">
+        ✨ Créé par Damoko — Célébration fan-made pour les 15 ans de FuzeIII ✨
+    </div>
+
+    <button class="back-btn" onclick="closeLegal()">
+        Retour à l'accueil
+    </button>
+
+</div>
+
+</div>
+
+<script>
+
+// Date cible pour le compte à rebours
+const targetDate = new Date("2026-05-13T17:00:00").getTime();
+
+const daysEl = document.getElementById("days");
+const hoursEl = document.getElementById("hours");
+const minutesEl = document.getElementById("minutes");
+const secondsEl = document.getElementById("seconds");
+const countdownDiv = document.getElementById("countdown");
+
+function updateCountdown(){
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    if(distance <= 0){
+        if(countdownDiv.innerHTML.indexOf("expired") === -1){
+            countdownDiv.innerHTML = `
+                <div class="expired">
+                    🎉 LES 15 ANS SONT LÀ 🎉
+                </div>
+            `;
+        }
+        return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    daysEl.innerText = String(days).padStart(2, '0');
+    hoursEl.innerText = String(hours).padStart(2, '0');
+    minutesEl.innerText = String(minutes).padStart(2, '0');
+    secondsEl.innerText = String(seconds).padStart(2, '0');
+}
+
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+// Gestion des cookies
+function acceptCookies() {
+    document.getElementById("cookieBanner").classList.add("hidden");
+    // On ne fait rien d'autre car le site n'utilise pas de cookies
+}
+
+function denyCookies() {
+    document.getElementById("cookieBanner").classList.add("hidden");
+    // Pareil, rien à stocker car pas de cookies
+}
+
+// Popup de remerciement
+function showThanksPopup() {
+    document.getElementById("thanksPopup").classList.add("active");
+}
+
+function closeThanksPopup() {
+    document.getElementById("thanksPopup").classList.remove("active");
+}
+
+// Navigation entre pages
+function openMerch(){
+    document.getElementById("mainPage").classList.add("hidden");
+    document.getElementById("merchPage").classList.add("active");
+    document.getElementById("legalPage").classList.remove("active");
+}
+
+function closeMerch(){
+    document.getElementById("mainPage").classList.remove("hidden");
+    document.getElementById("merchPage").classList.remove("active");
+}
+
+function openLegal(){
+    document.getElementById("mainPage").classList.add("hidden");
+    document.getElementById("legalPage").classList.add("active");
+    document.getElementById("merchPage").classList.remove("active");
+}
+
+function closeLegal(){
+    document.getElementById("mainPage").classList.remove("hidden");
+    document.getElementById("legalPage").classList.remove("active");
+}
+
+// Afficher la popup de remerciement au chargement de la page
+window.addEventListener('load', function() {
+    setTimeout(showThanksPopup, 500);
+});
+
+</script>
+
+</body>
+</html>
